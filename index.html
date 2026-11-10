@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAFEVEST | Dashboard Monitoring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><span></span><span></span><span></span></div>
+        <div><div class="brand-name">SAFE<span>VEST</span></div><div class="brand-caption">WORKER SAFETY SYSTEM</div></div>
+      </div>
+      <div class="site-switch">
+        <div class="site-icon"><svg viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14M7 21v-7h10v7M8 8h.01M12 8h.01M16 8h.01"/></svg></div>
+        <div class="site-text"><small>LOKASI PEMANTAUAN</small><strong>Area Industri • Site 01</strong></div>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="nav-label">MENU UTAMA</div>
+      <nav class="nav">
+        <a class="nav-item active" href="#overview"><span class="nav-icon">▦</span>Dashboard</a>
+        <a class="nav-item" href="#location"><span class="nav-icon">⌖</span>Lokasi Pekerja</a>
+        <a class="nav-item" href="#analytics"><span class="nav-icon">▥</span>Analisis Sensor</a>
+        <a class="nav-item" href="#events"><span class="nav-icon">◷</span>Riwayat Kejadian</a>
+      </nav>
+      <div class="nav-label">SISTEM</div>
+      <nav class="nav">
+        <a class="nav-item" href="#gateway"><span class="nav-icon">⌁</span>Status Gateway</a>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="gateway-card" id="gateway">
+        <div class="gateway-top"><span class="live-dot"></span><strong>Gateway LoRa</strong><span class="mini-status">ONLINE</span></div>
+        <div class="gateway-info"><span>ESP32 Receiver</span><b>433 MHz</b></div>
+        <div class="signal-track"><span></span></div>
+        <div class="gateway-bottom"><span>Menunggu paket LoRa</span><b>— dBm</b></div>
+      </div>
+      <div class="sidebar-footer"><div class="avatar">OP</div><div><strong>Operator</strong><small>Monitoring lapangan</small></div><span class="dots">•••</span></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+        <div class="breadcrumb">Monitoring <span>/</span> <strong>Dashboard</strong></div>
+        <div class="topbar-actions">
+          <div class="connection-pill"><span class="live-dot"></span><span>Menghubungkan...</span></div>
+          <button class="icon-button notification-button" id="notificationButton" aria-label="Notifikasi">♧<i id="notificationDot"></i></button>
+          <div class="top-avatar">OP</div>
+        </div>
+      </header>
+
+      <section class="page" id="overview">
+        <div class="page-heading">
+          <div><div class="eyebrow">MONITORING KESELAMATAN KERJA</div><h1>Dashboard Overview</h1><p>Pantau kondisi pekerja dan perangkat SAFEVEST dalam satu tampilan.</p></div>
+          <div class="heading-right"><div class="date-box"><span class="calendar-icon">▦</span><div><small>WAKTU PEMANTAUAN</small><strong id="currentDate">Memuat waktu...</strong></div></div><button class="btn btn-outline" id="refreshButton"><span>↻</span> Perbarui data</button></div>
+        </div>
+
+        <div class="demo-banner" id="connectionBanner"><span class="demo-icon">ⓘ</span><div><strong id="connectionTitle">Menunggu ESP32 receiver</strong><span id="connectionMessage">Dashboard akan menampilkan data aktual ketika receiver terhubung ke backend melalui Wi-Fi.</span></div><span class="demo-tag" id="connectionTag">OFFLINE</span></div>
+
+        <div class="section-heading"><div><h2>Kondisi pekerja</h2><p>Ringkasan pembacaan sensor terakhir</p></div><div class="last-update">Terakhir diperbarui <strong id="lastUpdate">—</strong></div></div>
+        <div class="metrics-grid">
+          <article class="metric-card heart-card">
+            <div class="metric-top"><div class="metric-icon heart-icon">♡</div><span class="metric-label">HEART RATE</span><span class="metric-menu">•••</span></div>
+            <div class="metric-value"><strong id="bpmValue">82</strong><span>BPM</span></div>
+            <div class="metric-sub"><span class="status-dot green"></span><span id="bpmStatus">Dalam rentang pantauan</span></div>
+            <div class="sparkline" id="sparkHeart"></div>
+          </article>
+          <article class="metric-card temp-card">
+            <div class="metric-top"><div class="metric-icon temp-icon">♨</div><span class="metric-label">SUHU SENSOR</span><span class="metric-menu">•••</span></div>
+            <div class="metric-value"><strong id="tempValue">36.7</strong><span>°C</span></div>
+            <div class="metric-sub"><span class="status-dot green"></span><span id="tempStatus">Pembacaan simulasi</span></div>
+            <div class="metric-footer"><span>Sensor DS18B20</span><span class="tiny-line"></span></div>
+          </article>
+          <article class="metric-card uv-card">
+            <div class="metric-top"><div class="metric-icon uv-icon">☼</div><span class="metric-label">INDEKS UV</span><span class="metric-menu">•••</span></div>
+            <div class="metric-value"><strong id="uvValue">3.2</strong><span>UV</span></div>
+            <div class="metric-sub"><span class="status-dot amber"></span><span id="uvStatus">Paparan sedang</span></div>
+            <div class="uv-scale"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="scale-labels"><span>Rendah</span><span>Tinggi</span></div>
+          </article>
+          <article class="metric-card worker-card">
+            <div class="metric-top"><div class="metric-icon worker-icon">♙</div><span class="metric-label">STATUS PEKERJA</span><span class="metric-menu">•••</span></div>
+            <div class="worker-status" id="workerStatus"><span class="status-dot green"></span>Normal</div>
+            <div class="worker-caption">Pekerja terpantau</div>
+            <div class="worker-bottom"><span class="worker-mini-avatar">P1</span><div><strong>Pekerja 01</strong><small>Rompi SAFEVEST #001</small></div><span class="online-label">Online</span></div>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel map-panel" id="location">
+            <div class="panel-header"><div><h2>Lokasi pekerja</h2><p>Posisi terakhir berdasarkan GPS</p></div><button class="text-button" id="centerMap">Lihat lokasi ↗</button></div>
+            <div class="map-meta"><div><span class="map-pin-dot"></span><div><strong id="coordinates">Menunggu GPS</strong><small>Koordinat GPS aktual</small></div></div><span class="gps-chip"><span class="status-dot amber"></span> MENUNGGU GPS</span></div>
+            <div id="map"></div>
+            <div class="map-footer"><span><span class="legend-dot"></span> Pekerja 01</span><span>Lokasi dari GPS receiver</span><button id="openMap">Buka peta ↗</button></div>
+          </section>
+
+          <section class="panel alert-panel">
+            <div class="panel-header"><div><h2>Pusat peringatan</h2><p>Notifikasi dan kondisi penting</p></div><span class="alert-count" id="alertCount">0</span></div>
+            <div class="alert-summary" id="alertSummary"><div class="alert-check">✓</div><div><strong>Tidak ada emergency aktif</strong><p>Menunggu status dari perangkat receiver.</p></div></div>
+            <div class="alert-list" id="alertList">
+              <div class="alert-row"><span class="alert-row-icon amber-bg">☼</span><div><strong>Menunggu data sensor</strong><p>Informasi UV akan muncul setelah paket sensor diterima.</p><small>Belum ada data</small></div><span class="alert-arrow">›</span></div>
+              <div class="alert-row"><span class="alert-row-icon blue-bg">⌁</span><div><strong>Menunggu koneksi gateway</strong><p>Status koneksi akan diperbarui otomatis.</p><small>Belum terhubung</small></div><span class="alert-arrow">›</span></div>
+            </div>
+            <button class="btn btn-light full-width" id="testEmergency">Uji notifikasi emergency</button>
+          </section>
+        </div>
+
+        <div class="content-grid charts-grid" id="analytics">
+          <section class="panel chart-panel">
+            <div class="panel-header"><div><h2>Tren heart rate</h2><p>Perubahan BPM selama sesi dashboard terbuka</p></div><span class="chart-period">REAL-TIME⌄</span></div>
+            <div class="chart-summary"><strong><span id="chartBpm">82</span> <small>BPM</small></strong><span class="chart-state"><span class="status-dot green"></span> Menunggu data</span></div>
+            <div class="chart-wrap"><canvas id="heartChart"></canvas></div>
+          </section>
+          <section class="panel chart-panel">
+            <div class="panel-header"><div><h2>Tren suhu sensor</h2><p>Pemantauan suhu dari DS18B20</p></div><span class="chart-period">REAL-TIME⌄</span></div>
+            <div class="chart-summary"><strong><span id="chartTemp">36.7</span> <small>°C</small></strong><span class="chart-state"><span class="status-dot green"></span> Menunggu data</span></div>
+            <div class="chart-wrap"><canvas id="tempChart"></canvas></div>
+          </section>
+        </div>
+
+        <div class="content-grid bottom-grid">
+          <section class="panel table-panel" id="events">
+            <div class="panel-header"><div><h2>Riwayat kejadian</h2><p>Aktivitas selama halaman ini terbuka</p></div><button class="text-button" id="clearEvents">Bersihkan ↻</button></div>
+            <div class="table-scroll"><table><thead><tr><th>WAKTU</th><th>KEJADIAN</th><th>SUMBER</th><th>STATUS</th></tr></thead><tbody id="eventTable"><tr><td>—</td><td>Dashboard dimulai</td><td>Website</td><td><span class="table-badge normal">Informasi</span></td></tr></tbody></table></div>
+            <div class="table-note">Riwayat ini hanya tersimpan sementara di browser.</div>
+          </section>
+        </div>
+        <footer class="page-footer"><div class="footer-brand"><div class="brand-mark small-mark"><span></span><span></span><span></span></div><strong>SAFEVEST</strong><span>Worker Safety Monitoring</span></div><span>Dashboard prototype • Tanpa database</span></footer>
+      </section>
+    </main>
+  </div>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="emergency-overlay" id="emergencyOverlay" aria-live="assertive">
+    <div class="emergency-modal"><div class="emergency-symbol">!</div><div class="eyebrow red-text">SIMULASI KEJADIAN DARURAT</div><h2>Emergency terdeteksi</h2><p>Peringatan emergency diterima dari perangkat ESP32 receiver.</p><div class="emergency-details"><span>Pekerja</span><strong>Pekerja 01 • #001</strong><span>Waktu</span><strong id="emergencyTime">—</strong></div><button class="btn btn-danger full-width" id="ackEmergency">Saya memahami — tutup peringatan</button></div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
