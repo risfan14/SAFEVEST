@@ -138,6 +138,21 @@
   <div class="emergency-overlay" id="emergencyOverlay" aria-live="assertive">
     <div class="emergency-modal"><div class="emergency-symbol">!</div><div class="eyebrow red-text">SIMULASI KEJADIAN DARURAT</div><h2>Emergency terdeteksi</h2><p>Peringatan emergency diterima dari perangkat ESP32 receiver.</p><div class="emergency-details"><span>Pekerja</span><strong>Pekerja 01 • #001</strong><span>Waktu</span><strong id="emergencyTime">—</strong></div><button class="btn btn-danger full-width" id="ackEmergency">Saya memahami — tutup peringatan</button></div>
   </div>
+  <div class="warning-overlay" id="sensorWarningOverlay" aria-live="assertive" aria-modal="true" role="alertdialog" aria-labelledby="sensorWarningTitle">
+    <div class="warning-modal">
+      <div class="warning-symbol">!</div>
+      <div class="eyebrow warning-text">PERINGATAN KONDISI PEKERJA</div>
+      <h2 id="sensorWarningTitle">Detak jantung dan paparan UV tinggi</h2>
+      <p>Heart rate melebihi 120 BPM dan indeks UV berada pada kategori tinggi. Hentikan sementara aktivitas di area terbuka, pindah ke tempat teduh, dan lakukan pemeriksaan kondisi pekerja.</p>
+      <div class="warning-details">
+        <span>Heart rate</span><strong id="warningBpmValue">— BPM</strong>
+        <span>Indeks UV</span><strong id="warningUvValue">—</strong>
+        <span>Waktu terdeteksi</span><strong id="warningTime">—</strong>
+      </div>
+      <button class="btn btn-warning full-width" id="ackSensorWarning">Saya memahami — tutup peringatan</button>
+      <small class="warning-note">Peringatan otomatis berdasarkan ambang prototipe, bukan diagnosis medis.</small>
+    </div>
+  </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>

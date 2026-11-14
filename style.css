@@ -26,3 +26,16 @@
 @media(max-width:1020px){.metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid,.bottom-grid{grid-template-columns:minmax(0,1fr)}.alert-panel{min-height:0}.charts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-heading{align-items:flex-start;flex-direction:column}.heading-right{width:100%;justify-content:space-between}}
 @media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .25s;width:255px;box-shadow:15px 0 40px #0a1c2820}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.topbar{height:58px;padding:0 15px;gap:10px}.menu-toggle{display:block}.breadcrumb{flex:1;font-size:10px}.topbar-actions{gap:9px}.connection-pill{padding:7px 8px;font-size:9px}.top-avatar{display:none}.page{padding:22px 14px}.page-heading h1{font-size:24px}.heading-right{gap:8px;flex-wrap:wrap}.date-box{flex:1}.btn-outline{padding:10px}.demo-banner{align-items:flex-start}.demo-tag{display:none}.section-heading{align-items:flex-start;gap:10px;flex-direction:column}.metrics-grid{gap:10px}.metric-card{min-height:162px;padding:13px}.metric-label{font-size:7px}.metric-value strong{font-size:27px}.worker-status{font-size:19px}.charts-grid{grid-template-columns:minmax(0,1fr)}.map-footer{flex-wrap:wrap}.map-footer>span:nth-child(2){margin-left:0}.map-footer button{margin-left:auto}.panel-header h2{font-size:13px}.chart-wrap{height:185px}.page-footer{gap:10px;align-items:flex-start;flex-direction:column}.date-box strong{font-size:9px}}
 @media(max-width:390px){.metrics-grid{grid-template-columns:minmax(0,1fr)}.metric-card{min-height:150px}.metric-value{margin-top:12px}.sparkline{height:20px}.connection-pill span:last-child{display:none}.page-heading h1{font-size:22px}.heading-right .btn{font-size:9px}}
+
+/* Peringatan gabungan heart rate dan UV */
+.warning-overlay{display:none;position:fixed;inset:0;z-index:4100;background:rgba(35,20,12,.68);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
+.warning-overlay.show{display:flex}
+.warning-modal{width:100%;max-width:460px;border-radius:16px;background:#fff;padding:28px;text-align:center;box-shadow:0 20px 80px #0004;animation:pop .2s ease}
+.warning-symbol{width:54px;height:54px;display:grid;place-items:center;border-radius:50%;background:#fff0df;color:#d97706;font:800 31px Manrope,sans-serif;margin:0 auto 16px;box-shadow:0 0 0 8px #fff8ef}
+.warning-text{color:#c56a12}
+.warning-modal h2{font:800 21px Manrope,sans-serif;color:#293b49;margin:8px 0 10px}
+.warning-modal>p{font-size:11px;line-height:1.7;color:#71818c}
+.warning-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;padding:15px;background:#fff8ef;border:1px solid #f8e4c9;border-radius:9px;margin:18px 0;font-size:10px}
+.warning-details span{color:#87959e}.warning-details strong{text-align:right;color:#a6530b}
+.btn-warning{background:#d97706;color:#fff;border:0}.btn-warning:hover{background:#b85f05}
+.warning-note{display:block;margin-top:12px;color:#89959d;font-size:9px;line-height:1.5}
